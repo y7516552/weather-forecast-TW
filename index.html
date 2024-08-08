@@ -331,7 +331,7 @@
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                 </select>
-                <input id="search" class="form-control h-50 me-2" type="search" placeholder="Search" aria-label="Search">
+                <input id="search" class="form-control h-50 me-2" type="search" placeholder="輸入縣市" aria-label="Search">
                 <button class="btn btn-outline-success h-50" type="button" onclick="changeFilters()">Search</button>
             </form>
         </div>
@@ -361,64 +361,76 @@
         function renderWeatherCad(allInfo,time=0){
             content =''
             let area = allInfo.length;
-            
-            for(i=0 ; i<area ;i++) {
-                let weatherName = allInfo[i]['weatherElement'][0]['time'][time]['parameter']['parameterName'];
-                let wxValne= allInfo[i]['weatherElement'][0]['time'][time]['parameter']['parameterValue'];
-                let pop = allInfo[i]['weatherElement'][1]['time'][time]['parameter']['parameterName'];
-                let minT = allInfo[i]['weatherElement'][2]['time'][time]['parameter']['parameterName'];
-                let maxT = allInfo[i]['weatherElement'][4]['time'][time]['parameter']['parameterName'];
-                let comfort = allInfo[i]['weatherElement'][3]['time'][time]['parameter']['parameterName'];
-                let weatherImg = '';
-                let sunnyIcon ='<svg class="sunny" viewbox="15 15 70 70"><animateTransform dur="10s" attributeName="transform" repeatCount="indefinite" type="rotate" from="0,0,0"to="360,0,0" /><rect class="sunny-1" ; width="40" height="40" x="30" y="30" rx="2" ></rect><rect width="40" height="40" x="30" y="30" rx="2"></rect><circle id="sun" cx="50" cy="50" r="20"></circle></svg>';
-                let cloudysunIcon ='<svg class="cloudy_sunny" viewbox="0 -5 100 100"><rect width="30" height="30" x="45" y="25" rx="2" rotate="45" ><animateTransform dur="5s" attributeName="transform" repeatCount="indefinite" type="rotate" from="0,60,40"to="360,60,40" /></rect><rect width="30" height="30" x="45" y="25" rx="2"><animateTransform dur="5s" attributeName="transform" repeatCount="indefinite" type="rotate" from="-45,60,40"to="315,60,40" /></rect><circle id="sun" cx="60" cy="40" r="15"></circle><g id="cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="-5,10;10,10;-5,10" dur="7s"repeatCount="indefinite" /></g></svg>';
-                let cloudyIcon = '<svg class="cloudy" viewbox="0 0 100 100"><g id="cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="10,0;-5,0;10,0" dur="2s"repeatCount="indefinite" /></g><g id="cloud2"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="-5,20;10,20;-5,20" dur="2s"repeatCount="indefinite" /></g><animateTransform attributeName="transform" dur="0.1s" type="scale" values="1.5"/></svg>';
-                let overcastIcon = '<svg class="overcast" viewbox="0 0 100 100"><g id="overcast_cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="10,0;-5,0;10,0" dur="2s"repeatCount="indefinite" /></g><g id="overcast_cloud2"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="-5,20;10,20;-5,20" dur="2s"repeatCount="indefinite" /></g></svg>';
-                let rainyIcon ='<svg class="rainy" viewbox="0 10 100 100"><g id="rain"><rect width="2" height="7" x="45" y="60" rx="1"><animateTransform dur="1.5s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,10,50;30,-150,-20" /></rect><rect width="2" height="7" x="60" y="60" rx="1"><animateTransform dur="1.8s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,50;30,-150,-20" /></rect><rect width="2" height="7" x="75" y="55" rx="1"><animateTransform dur="1.3s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></rect><rect width="2" height="7" x="65" y="45" rx="1"><animateTransform dur="1.2s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></rect><animateTransform link attributeName="transform" type="translate" values="-5,-5;10,0;-5,-5" dur="5s"repeatCount="indefinite" /></g><g id="overcast_cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="10,0;-5,0;10,0" dur="2s"repeatCount="indefinite" /></g><g id="overcast_cloud2"><circle cx="30" cy="50" r="20"></circle><circle cx="50" cy="50" r="25"></circle><circle cx="70" cy="55" r="20"></circle><circle cx="80" cy="55" r="15"></circle><animateTransform attributeName="transform" type="translate" values="-5,15;5,15;-5,15" dur="2s"repeatCount="indefinite" /></g></svg>';
-                let thunderIcon = '<svg class="rainy_thunder" viewbox="0 10 100 100"><g id="rain"><rect width="2" height="7" x="45" y="60" rx="1"><animateTransform dur="0.6s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,10,50;30,-150,-20" /></rect><rect width="2" height="7" x="60" y="60" rx="1"><animateTransform dur="0.8s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,50;30,-150,-20" /></rect><rect width="2" height="7" x="75" y="55" rx="1"><animateTransform dur="0.7s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></rect><rect width="2" height="7" x="65" y="45" rx="1"><animateTransform dur="0.5s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></rect><animateTransform link attributeName="transform" type="translate" values="-5,-5;10,0;-5,-5" dur="2s"repeatCount="indefinite" /></g><g><polyline id="thunder" points="50,38 46,50 52,50 50,60 56,47 50,47 50,38"><animateTransform dur="2.5s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></polyline><polyline id="thunder" points="50,38 46,50 52,50 50,60 56,47 50,47 50,38"><animateTransform dur="3s" attributeName="transform" repeatCount="indefinite" type="rotate"values="10,60,100;-100,200,10" /></polyline></g><g id="overcast_cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="10,0;-5,0;10,0" dur="2s"repeatCount="indefinite" /></g><g id="overcast_cloud2"><circle cx="30" cy="50" r="20"></circle><circle cx="50" cy="50" r="25"></circle><circle cx="70" cy="55" r="20"></circle><circle cx="80" cy="55" r="15"></circle><animateTransform attributeName="transform" type="translate" values="-5,15;5,15;-5,15" dur="2s"repeatCount="indefinite" /></g></svg>';
-                let comfortLevel=0
-                //判斷wxValne的值
-                if(wxValne == 1){
-                    weatherImg=sunnyIcon ;
-                }else if(wxValne <= 3){
-                    weatherImg= cloudysunIcon ;
-                }else if(wxValne <= 5){
-                    weatherImg = cloudyIcon;
-                }else if(wxValne <= 7){
-                    weatherImg= overcastIcon;
-                }else if(wxValne <= 13){
-                    weatherImg= rainyIcon;
-                }else if(wxValne <= 13){
-                    weatherImg= thunderIcon;
-                }else{
-                    weatherImg= thunderIcon;
-                }
-                    
-                if(comfort =="涼爽至舒適"){
-                    comfortLevel=2
-                }else if(comfort =="舒適"){
-                    comfortLevel=3
-                }else if(comfort == "舒適至悶熱"){
-                    comfortLevel=4
-                }else if(comfort == "悶熱"){
-                    comfortLevel=5
-                }else if(comfort =="悶熱至易中暑"){
-                    comfortLevel=6
-                }else if(comfort =="易中暑"){
-                    comfortLevel=7
-                }
-                content +=`<div class="card order-${i}">
-                                <div class="card-img"> ${weatherImg}</div>
-                                    <div class="card-info">
-                                        <h3>${allInfo[i]['locationName']}</h3>
-                                        <h4>${weatherName}</h4>
-                                        <h4>降雨機率:<span>${pop}</span>%</h4>
-                                        <h4>溫度:<span>${minT}</span>°C-<span>${maxT}</span>°C</h4>
-                                        <span class="comfort comfort-${comfortLevel}">${comfort}</span>
+            if(area==0) {
+                content +=`<div>
+                                    <div class="card-img"></div>
+                                        <div class="card-info">
+                                            <h3>沒有符合的資料!</h3>
+                                            <h4></h4>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>`;
+                                </div>`;
                 containerEle.innerHTML = content ;
+            }else{
+
+                for(i=0 ; i<area ;i++) {
+                    let weatherName = allInfo[i]['weatherElement'][0]['time'][time]['parameter']['parameterName'];
+                    let wxValne= allInfo[i]['weatherElement'][0]['time'][time]['parameter']['parameterValue'];
+                    let pop = allInfo[i]['weatherElement'][1]['time'][time]['parameter']['parameterName'];
+                    let minT = allInfo[i]['weatherElement'][2]['time'][time]['parameter']['parameterName'];
+                    let maxT = allInfo[i]['weatherElement'][4]['time'][time]['parameter']['parameterName'];
+                    let comfort = allInfo[i]['weatherElement'][3]['time'][time]['parameter']['parameterName'];
+                    let weatherImg = '';
+                    let sunnyIcon ='<svg class="sunny" viewbox="15 15 70 70"><animateTransform dur="10s" attributeName="transform" repeatCount="indefinite" type="rotate" from="0,0,0"to="360,0,0" /><rect class="sunny-1" ; width="40" height="40" x="30" y="30" rx="2" ></rect><rect width="40" height="40" x="30" y="30" rx="2"></rect><circle id="sun" cx="50" cy="50" r="20"></circle></svg>';
+                    let cloudysunIcon ='<svg class="cloudy_sunny" viewbox="0 -5 100 100"><rect width="30" height="30" x="45" y="25" rx="2" rotate="45" ><animateTransform dur="5s" attributeName="transform" repeatCount="indefinite" type="rotate" from="0,60,40"to="360,60,40" /></rect><rect width="30" height="30" x="45" y="25" rx="2"><animateTransform dur="5s" attributeName="transform" repeatCount="indefinite" type="rotate" from="-45,60,40"to="315,60,40" /></rect><circle id="sun" cx="60" cy="40" r="15"></circle><g id="cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="-5,10;10,10;-5,10" dur="7s"repeatCount="indefinite" /></g></svg>';
+                    let cloudyIcon = '<svg class="cloudy" viewbox="0 0 100 100"><g id="cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="10,0;-5,0;10,0" dur="2s"repeatCount="indefinite" /></g><g id="cloud2"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="-5,20;10,20;-5,20" dur="2s"repeatCount="indefinite" /></g><animateTransform attributeName="transform" dur="0.1s" type="scale" values="1.5"/></svg>';
+                    let overcastIcon = '<svg class="overcast" viewbox="0 0 100 100"><g id="overcast_cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="10,0;-5,0;10,0" dur="2s"repeatCount="indefinite" /></g><g id="overcast_cloud2"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="-5,20;10,20;-5,20" dur="2s"repeatCount="indefinite" /></g></svg>';
+                    let rainyIcon ='<svg class="rainy" viewbox="0 10 100 100"><g id="rain"><rect width="2" height="7" x="45" y="60" rx="1"><animateTransform dur="1.5s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,10,50;30,-150,-20" /></rect><rect width="2" height="7" x="60" y="60" rx="1"><animateTransform dur="1.8s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,50;30,-150,-20" /></rect><rect width="2" height="7" x="75" y="55" rx="1"><animateTransform dur="1.3s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></rect><rect width="2" height="7" x="65" y="45" rx="1"><animateTransform dur="1.2s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></rect><animateTransform link attributeName="transform" type="translate" values="-5,-5;10,0;-5,-5" dur="5s"repeatCount="indefinite" /></g><g id="overcast_cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="10,0;-5,0;10,0" dur="2s"repeatCount="indefinite" /></g><g id="overcast_cloud2"><circle cx="30" cy="50" r="20"></circle><circle cx="50" cy="50" r="25"></circle><circle cx="70" cy="55" r="20"></circle><circle cx="80" cy="55" r="15"></circle><animateTransform attributeName="transform" type="translate" values="-5,15;5,15;-5,15" dur="2s"repeatCount="indefinite" /></g></svg>';
+                    let thunderIcon = '<svg class="rainy_thunder" viewbox="0 10 100 100"><g id="rain"><rect width="2" height="7" x="45" y="60" rx="1"><animateTransform dur="0.6s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,10,50;30,-150,-20" /></rect><rect width="2" height="7" x="60" y="60" rx="1"><animateTransform dur="0.8s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,50;30,-150,-20" /></rect><rect width="2" height="7" x="75" y="55" rx="1"><animateTransform dur="0.7s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></rect><rect width="2" height="7" x="65" y="45" rx="1"><animateTransform dur="0.5s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></rect><animateTransform link attributeName="transform" type="translate" values="-5,-5;10,0;-5,-5" dur="2s"repeatCount="indefinite" /></g><g><polyline id="thunder" points="50,38 46,50 52,50 50,60 56,47 50,47 50,38"><animateTransform dur="2.5s" attributeName="transform" repeatCount="indefinite" type="rotate"values="30,50,60;30,-150,-20" /></polyline><polyline id="thunder" points="50,38 46,50 52,50 50,60 56,47 50,47 50,38"><animateTransform dur="3s" attributeName="transform" repeatCount="indefinite" type="rotate"values="10,60,100;-100,200,10" /></polyline></g><g id="overcast_cloud"><circle cx="30" cy="50" r="15"></circle><circle cx="50" cy="50" r="20"></circle><circle cx="70" cy="55" r="15"></circle><circle cx="80" cy="55" r="10"></circle><animateTransform attributeName="transform" type="translate" values="10,0;-5,0;10,0" dur="2s"repeatCount="indefinite" /></g><g id="overcast_cloud2"><circle cx="30" cy="50" r="20"></circle><circle cx="50" cy="50" r="25"></circle><circle cx="70" cy="55" r="20"></circle><circle cx="80" cy="55" r="15"></circle><animateTransform attributeName="transform" type="translate" values="-5,15;5,15;-5,15" dur="2s"repeatCount="indefinite" /></g></svg>';
+                    let comfortLevel=0
+                    //判斷wxValne的值
+                    if(wxValne == 1){
+                        weatherImg=sunnyIcon ;
+                    }else if(wxValne <= 3){
+                        weatherImg= cloudysunIcon ;
+                    }else if(wxValne <= 5){
+                        weatherImg = cloudyIcon;
+                    }else if(wxValne <= 7){
+                        weatherImg= overcastIcon;
+                    }else if(wxValne <= 13){
+                        weatherImg= rainyIcon;
+                    }else if(wxValne <= 13){
+                        weatherImg= thunderIcon;
+                    }else{
+                        weatherImg= thunderIcon;
+                    }
+                        
+                    if(comfort =="涼爽至舒適"){
+                        comfortLevel=2
+                    }else if(comfort =="舒適"){
+                        comfortLevel=3
+                    }else if(comfort == "舒適至悶熱"){
+                        comfortLevel=4
+                    }else if(comfort == "悶熱"){
+                        comfortLevel=5
+                    }else if(comfort =="悶熱至易中暑"){
+                        comfortLevel=6
+                    }else if(comfort =="易中暑"){
+                        comfortLevel=7
+                    }
+                    content +=`<div class="card order-${i}">
+                                    <div class="card-img"> ${weatherImg}</div>
+                                        <div class="card-info">
+                                            <h3>${allInfo[i]['locationName']}</h3>
+                                            <h4>${weatherName}</h4>
+                                            <h4>降雨機率:<span>${pop}</span>%</h4>
+                                            <h4>溫度:<span>${minT}</span>°C-<span>${maxT}</span>°C</h4>
+                                            <span class="comfort comfort-${comfortLevel}">${comfort}</span>
+                                        </div>
+                                    </div>
+                                </div>`;
+                    containerEle.innerHTML = content ;
+                }
             }
         }
 
@@ -428,7 +440,7 @@
                 return response.json();
             })
             .then(function(data) {
-                console.log(data);
+                // console.log(data);
                 allInfo = data['records']['location'];
                 let area = allInfo.length;
                 let timeing=allInfo[0]['weatherElement'][0]['time']
@@ -452,12 +464,20 @@
         })
 
         function changeFilters(){
-            console.log("content",searchEle.value)
-            
+            console.log("search",searchEle.value,allInfo)
+            let result = []
+            allInfo.forEach(e => {
+                if(e.locationName.includes(searchEle.value)) result.push(e)
+            })
+            renderWeatherCad(result,timeSelectEle.value)
         }
 
         function changeTimeing(){
-            renderWeatherCad(allInfo,timeSelectEle.value)
+            if(searchEle.value !== "") {
+                changeFilters()
+            }else{
+                renderWeatherCad(allInfo,timeSelectEle.value)
+            }
         }
 
         function reset(){
